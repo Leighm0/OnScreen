@@ -6,7 +6,7 @@
 	<model>On Screen Display</model>
 	<created>16/03/2022 12:00 AM</created>
 	<modified>16/03/2022 12:00 AM</modified>
-	<version>1</version>
+	<version>2</version>
 	<control>lua_gen</control>
 	<driver>DriverWorks</driver>
 	<small image_source="c4z">icons/device_sm.png</small>
@@ -14,10 +14,10 @@
 	<proxies>
 		<proxy proxybindingid="5001" name="On Screen" image_source="c4z" large_image="icons/device_lg.png" small_image="icons/device_sm.png">uibutton</proxy>
 	</proxies>
+	<events/>
 	<config>
 		<script file="driver.lua"/>
 		<documentation file="www/documentation/index.html"/>
-		<commands/>
 		<properties>
 			<property>
 				<name>Driver Information</name>
@@ -47,6 +47,8 @@
 				<readonly>false</readonly>
 			</property>
 		</properties>
+		<actions/>
+		<commands/>
 	</config>
 	<capabilities>
 		<navigator_display_option proxybindingid="5001">

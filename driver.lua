@@ -1,9 +1,11 @@
----------------
--- Globals
----------------
+-------------
+-- Globals --
+-------------
 do
 	OPC = {}
 	RFP = {}
+	g_debugMode = 0
+	g_DbgPrint = nil
 end
 
 ----------------------------------------------------------------------------
@@ -13,6 +15,7 @@ end
 function OnDriverInit()
 	C4:UpdateProperty("Driver Name", C4:GetDriverConfigInfo("name"))
 	C4:UpdateProperty("Driver Version", C4:GetDriverConfigInfo("version"))
+	C4:AllowExecute(true)
 end
 
 ------------------------------------------------------------------------------------------------
@@ -21,6 +24,14 @@ end
 ------------------------------------------------------------------------------------------------
 function OnDriverLateInit()
 	ShowProxyInRoom(5001)
+end
+
+-----------------------------------------------------------------------------------------------------------------------------
+--Function Name : OnDriverDestroyed
+--Description   : Function called when a driver is deleted from a project, updated within a project or Director is shut down.
+-----------------------------------------------------------------------------------------------------------------------------
+function OnDriverDestroyed()
+	if (g_DbgPrint ~= nil) then g_DbgPrint:Cancel() end
 end
 
 --------------------------------------------------------------------------------------------
@@ -39,7 +50,7 @@ end
 --Parameters    : strProperty(str)
 --Description   : Function called by Director when a property changes value.
 ----------------------------------------------------------------------------
-function OnPropertyChanged (strProperty)
+function OnPropertyChanged(strProperty)
 	Dbg("OnPropertyChanged: " .. strProperty .. " (" .. Properties[strProperty] .. ")")
 	local propertyValue = Properties[strProperty]
 	if (propertyValue == nil) then propertyValue = "" end
@@ -62,10 +73,18 @@ end
 --Description   : Function called when Debug Mode property changes value.
 -------------------------------------------------------------------------
 function OPC.DEBUG_MODE(strProperty)
-	gDbgPrint = C4:KillTimer(gDbgPrint or 0)
-	if (strProperty == "Off") then return end
-	gDbgPrint = C4:AddTimer(8, "HOURS")
-	print ("Enabled Debug Timer for 8 hours")
+	if (strProperty == "Off") then
+		if (g_DbgPrint ~= nil) then g_DbgPrint:Cancel() end
+		g_debugMode = 0
+		print ("Debug Mode: Off")
+	else
+		g_debugMode = 1
+		print ("Debug Mode: On for 8 hours")
+		g_DbgPrint = C4:SetTimer(28800000, function(timer)
+			C4:UpdateProperty("Debug Mode", "Off")
+			timer:Cancel()
+		end, false)
+	end
 end
 
 -----------------------------------------------------------------
@@ -73,7 +92,7 @@ end
 --Parameters    : idBinding(int), strCommand(str), tParams(table)
 --Description   : Function called when proxy command is called
 -----------------------------------------------------------------
-function ReceivedFromProxy (idBinding, strCommand, tParams)
+function ReceivedFromProxy(idBinding, strCommand, tParams)
 	tParams = tParams or {}
 	Dbg("ReceivedFromProxy: [" .. idBinding .. "] : " ..strCommand .. " (" ..  formatParams(tParams) .. ")")
 	local strCommand = string.upper(strCommand)
@@ -91,10 +110,10 @@ end
 
 ------------------------------------------------------------------------------
 --Function Name : RFP.SELECT
---Parameters    : tParams(table), idBinding(int)
+--Parameters    : idBinding(int), tParams(table)
 --Description   : Function called when "SELECT" ReceivedFromProxy is received.
 ------------------------------------------------------------------------------
-function RFP.SELECT (idBinding, tParams)
+function RFP.SELECT(idBinding, tParams)
 	C4:SendToDevice(tParams["Room"], "CONTROL4", {})
 end
 
@@ -133,7 +152,7 @@ end
 --Description   : Function called when debug information is to be printed/logged (if enabled)
 ---------------------------------------------------------------------------------------------
 function Dbg(strDebugText)
-	if (gDbgPrint) then print(strDebugText)	end
+    if (g_debugMode == 1) then print(strDebugText) end
 end
 
 ---------------------------------------------------------
