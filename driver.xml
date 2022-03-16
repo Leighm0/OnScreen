@@ -1,0 +1,77 @@
+<devicedata>
+	<copyright>Copyright 2022 Welton Cartel. All rights reserved.</copyright>
+	<creator>Welton Cartel</creator>
+	<manufacturer>Control4</manufacturer>
+	<name>On Screen - Experience Button</name>
+	<model>On Screen Display</model>
+	<created>16/03/2022 12:00 AM</created>
+	<modified>16/03/2022 12:00 AM</modified>
+	<version>1</version>
+	<control>lua_gen</control>
+	<driver>DriverWorks</driver>
+	<small image_source="c4z">icons/device_sm.png</small>
+	<large image_source="c4z">icons/device_lg.png</large>
+	<proxies>
+		<proxy proxybindingid="5001" name="On Screen" image_source="c4z" large_image="icons/device_lg.png" small_image="icons/device_sm.png">uibutton</proxy>
+	</proxies>
+	<config>
+		<script file="driver.lua"/>
+		<documentation file="www/documentation/index.html"/>
+		<commands/>
+		<properties>
+			<property>
+				<name>Driver Information</name>
+				<type>LABEL</type>
+				<default>Driver Information</default>
+			</property>
+			<property>
+				<name>Driver Name</name>
+				<default/>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Driver Version</name>
+				<default/>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Debug Mode</name>
+				<type>LIST</type>
+				<items>
+					<item>Off</item>
+					<item>On</item>
+				</items>
+				<default>Off</default>
+				<readonly>false</readonly>
+			</property>
+		</properties>
+	</config>
+	<capabilities>
+		<navigator_display_option proxybindingid="5001">
+			<display_icons>
+				<Icon height="70" width="70">controller://driver/experience-button-on_screen/icons/device/default_70.png</Icon>
+				<Icon height="90" width="90">controller://driver/experience-button-on_screen/icons/device/default_90.png</Icon>
+				<Icon height="300" width="300">controller://driver/experience-button-on_screen/icons/device/default_300.png</Icon>
+			</display_icons>
+		</navigator_display_option>
+	</capabilities>
+	<connections>
+		<connection>
+			<id>5001</id>
+			<facing>6</facing>
+			<connectionname>UIBUTTON</connectionname>
+			<type>2</type>
+			<consumer>False</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<classes>
+				<class>
+					<classname>UIBUTTON</classname>
+				</class>
+			</classes>
+		</connection>
+	</connections>
+</devicedata>
