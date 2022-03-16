@@ -14,3 +14,4 @@ Control4 Driver to have the 'On Screen' Neeo remote button as an Experience Butt
 #### Release Notes:
 
 - Version 1: Initial Release
+- Version 2: Debug functions revamped
