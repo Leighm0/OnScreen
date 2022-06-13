@@ -34,17 +34,6 @@ function OnDriverDestroyed()
 	if (g_DbgPrint ~= nil) then g_DbgPrint:Cancel() end
 end
 
---------------------------------------------------------------------------------------------
---Function Name : OnSystemEvent
---Parameters    : data(table)
---Description   : A callback function that is sent to a driver when a system event is fired.
---------------------------------------------------------------------------------------------
-function OnSystemEvent(data)
-	if (eventname == 'OnPIP') then
-		HideProxyInAllRooms(5001)
-	end
-end
-
 ----------------------------------------------------------------------------
 --Function Name : OnPropertyChanged
 --Parameters    : strProperty(str)
@@ -125,25 +114,10 @@ end
 function ShowProxyInRoom(idBinding)
 	idBinding = idBinding or 0
 	if (idBinding == 0) then return end
+	Dbg("ShowProxyInRoom: Adding Driver to Room (" .. idBinding .. ")")
 	local id, name = next(C4:GetBoundConsumerDevices(C4:GetDeviceID(), idBinding))
 	idRoom = C4:RoomGetId()
 	C4:SendToDevice(idRoom, "SET_DEVICE_HIDDEN_STATE", {PROXY_GROUP = "OrderedWatchList", DEVICE_ID = id, IS_HIDDEN = false})
-end
-
---------------------------------------------------------------------------------
---Function Name : HideProxyInAllRooms
---Parameters    : idBinding(int)
---Description   : Function called to hide the UI experience button in all rooms.
---------------------------------------------------------------------------------
-function HideProxyInAllRooms(idBinding)
-	idBinding = idBinding or 0
-	if (idBinding == 0) then return end
-	local id, name = next(C4:GetBoundConsumerDevices(C4:GetDeviceID(), idBinding))
-	local roomdevs = C4:GetDevicesByC4iName("roomdevice.c4i")
-	for roomid, roomname in pairs(C4:GetDevicesByC4iName("roomdevice.c4i") or {}) do
-		C4:SendToDevice(roomid, "SET_DEVICE_HIDDEN_STATE", {PROXY_GROUP = "OrderedWatchList", DEVICE_ID = id, IS_HIDDEN = true})
-		C4:SendToDevice(roomid, "SET_DEVICE_HIDDEN_STATE", {PROXY_GROUP = "OrderedListenList", DEVICE_ID = id, IS_HIDDEN = true})
-	end
 end
 
 ---------------------------------------------------------------------------------------------
