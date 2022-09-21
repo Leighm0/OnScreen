@@ -16,3 +16,6 @@ Control4 Driver to have the 'On Screen' Neeo remote button as an Experience Butt
 - Version 1: Initial Release
 - Version 2: Debug functions revamped
 - Version 3: Clean out pointless code
+
+## Compiled Driver Available from Releases:
+https://github.com/Leighm0/OnScreen/releases
